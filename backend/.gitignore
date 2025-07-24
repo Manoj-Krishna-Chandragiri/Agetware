@@ -1,0 +1,19 @@
+# Backend Dependencies
+node_modules/
+*.log
+*.env
+*.db
+*.sqlite
+*.sqlite3
+
+# Production builds
+dist/
+build/
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
