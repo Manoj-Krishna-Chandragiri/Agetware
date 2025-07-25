@@ -5,7 +5,7 @@ const sqlite3 = require('sqlite3').verbose();
 const { v4: uuidv4 } = require('uuid');
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors());
@@ -82,6 +82,117 @@ function calculateLoanDetails(principal, years, interestRate) {
     totalInterest,
     totalAmount,
     monthlyEmi: Math.round(monthlyEmi * 100) / 100 // Round to 2 decimal places
+  };
+}
+
+// Caesar Cipher utility functions
+function caesarEncode(message, shift) {
+  return message.split('').map(char => {
+    if (char.match(/[a-z]/i)) {
+      const code = char.charCodeAt(0);
+      const base = code >= 65 && code <= 90 ? 65 : 97;
+      return String.fromCharCode(((code - base + shift) % 26) + base);
+    }
+    return char;
+  }).join('');
+}
+
+function caesarDecode(message, shift) {
+  return caesarEncode(message, -shift);
+}
+
+// Indian Currency Format utility function
+function formatIndianCurrency(number) {
+  const [integerPart, decimalPart] = number.toString().split('.');
+  let formattedInteger = '';
+  
+  // Handle the last 3 digits
+  if (integerPart.length <= 3) {
+    formattedInteger = integerPart;
+  } else {
+    const lastThree = integerPart.slice(-3);
+    const remaining = integerPart.slice(0, -3);
+    
+    // Add commas every 2 digits from right to left for the remaining part
+    let formatted = '';
+    for (let i = remaining.length - 1; i >= 0; i -= 2) {
+      const chunk = i === 0 ? remaining.slice(0, 1) : remaining.slice(Math.max(0, i - 1), i + 1);
+      formatted = chunk + (formatted ? ',' + formatted : '');
+    }
+    
+    formattedInteger = formatted + ',' + lastThree;
+  }
+  
+  return decimalPart ? formattedInteger + '.' + decimalPart : formattedInteger;
+}
+
+// List Combiner utility function
+function combineLists(list1, list2) {
+  const combined = [...list1, ...list2];
+  
+  // Sort by left position
+  combined.sort((a, b) => a.positions[0] - b.positions[0]);
+  
+  const result = [];
+  
+  for (let i = 0; i < combined.length; i++) {
+    const current = combined[i];
+    let merged = false;
+    
+    for (let j = 0; j < result.length; j++) {
+      const existing = result[j];
+      
+      // Check if more than half of current is contained within existing
+      const currentWidth = current.positions[1] - current.positions[0];
+      const existingWidth = existing.positions[1] - existing.positions[0];
+      
+      const overlapStart = Math.max(current.positions[0], existing.positions[0]);
+      const overlapEnd = Math.min(current.positions[1], existing.positions[1]);
+      const overlap = Math.max(0, overlapEnd - overlapStart);
+      
+      if (overlap > currentWidth / 2 || overlap > existingWidth / 2) {
+        // Merge values
+        existing.values = [...existing.values, ...current.values];
+        merged = true;
+        break;
+      }
+    }
+    
+    if (!merged) {
+      result.push({
+        positions: [...current.positions],
+        values: [...current.values]
+      });
+    }
+  }
+  
+  // Sort result by left position
+  return result.sort((a, b) => a.positions[0] - b.positions[0]);
+}
+
+// Minimizing Loss utility function
+function findMinimumLoss(prices) {
+  let minLoss = Infinity;
+  let buyYear = -1;
+  let sellYear = -1;
+  
+  for (let i = 0; i < prices.length; i++) {
+    for (let j = i + 1; j < prices.length; j++) {
+      if (prices[i] > prices[j]) {
+        const loss = prices[i] - prices[j];
+        if (loss < minLoss) {
+          minLoss = loss;
+          buyYear = i + 1; // Convert to 1-based year
+          sellYear = j + 1; // Convert to 1-based year
+        }
+      }
+    }
+  }
+  
+  return {
+    buyYear,
+    sellYear,
+    loss: minLoss === Infinity ? 0 : minLoss
   };
 }
 
@@ -339,6 +450,144 @@ app.get('/api/v1/customers/:customer_id/overview', (req, res) => {
     });
   });
 });
+
+// ============== ADDITIONAL ASSIGNMENT PROBLEMS ==============
+
+// Caesar Cipher: Encode/Decode endpoint
+app.post('/api/v1/caesar-cipher', (req, res) => {
+  const { message, shift, operation } = req.body;
+
+  if (!message || shift === undefined || !operation) {
+    return res.status(400).json({
+      error: 'Missing required fields: message, shift, operation (encode/decode)'
+    });
+  }
+
+  if (operation !== 'encode' && operation !== 'decode') {
+    return res.status(400).json({
+      error: 'Operation must be either "encode" or "decode"'
+    });
+  }
+
+  let result;
+  if (operation === 'encode') {
+    result = caesarEncode(message, parseInt(shift));
+  } else {
+    result = caesarDecode(message, parseInt(shift));
+  }
+
+  res.status(200).json({
+    original_message: message,
+    shift,
+    operation,
+    result
+  });
+});
+
+// Indian Currency Format converter
+app.post('/api/v1/currency-format', (req, res) => {
+  const { number } = req.body;
+
+  if (number === undefined || number === null) {
+    return res.status(400).json({
+      error: 'Missing required field: number'
+    });
+  }
+
+  if (isNaN(number)) {
+    return res.status(400).json({
+      error: 'Invalid number format'
+    });
+  }
+
+  const formattedNumber = formatIndianCurrency(parseFloat(number));
+
+  res.status(200).json({
+    original_number: number,
+    formatted_number: formattedNumber
+  });
+});
+
+// List Combiner
+app.post('/api/v1/combine-lists', (req, res) => {
+  const { list1, list2 } = req.body;
+
+  if (!Array.isArray(list1) || !Array.isArray(list2)) {
+    return res.status(400).json({
+      error: 'Both list1 and list2 must be arrays'
+    });
+  }
+
+  // Validate list format
+  const validateList = (list) => {
+    return list.every(item => 
+      item.positions && 
+      Array.isArray(item.positions) && 
+      item.positions.length === 2 &&
+      typeof item.positions[0] === 'number' &&
+      typeof item.positions[1] === 'number' &&
+      item.values &&
+      Array.isArray(item.values)
+    );
+  };
+
+  if (!validateList(list1) || !validateList(list2)) {
+    return res.status(400).json({
+      error: 'Invalid list format. Each item must have "positions" array with 2 numbers and "values" array'
+    });
+  }
+
+  const combinedList = combineLists(list1, list2);
+
+  res.status(200).json({
+    list1,
+    list2,
+    combined_list: combinedList
+  });
+});
+
+// Minimizing Loss calculator
+app.post('/api/v1/minimize-loss', (req, res) => {
+  const { prices } = req.body;
+
+  if (!Array.isArray(prices)) {
+    return res.status(400).json({
+      error: 'Prices must be an array of numbers'
+    });
+  }
+
+  if (prices.length < 2) {
+    return res.status(400).json({
+      error: 'At least 2 prices are required'
+    });
+  }
+
+  if (!prices.every(price => typeof price === 'number')) {
+    return res.status(400).json({
+      error: 'All prices must be numbers'
+    });
+  }
+
+  const result = findMinimumLoss(prices);
+
+  if (result.loss === 0) {
+    return res.status(200).json({
+      prices,
+      message: 'No profitable loss scenario found',
+      result: null
+    });
+  }
+
+  res.status(200).json({
+    prices,
+    buy_year: result.buyYear,
+    sell_year: result.sellYear,
+    minimum_loss: result.loss,
+    message: `Buy in year ${result.buyYear} at price ${prices[result.buyYear - 1]} and sell in year ${result.sellYear} at price ${prices[result.sellYear - 1]}`
+  });
+});
+
+// ============== END ADDITIONAL ASSIGNMENT PROBLEMS ==============
 
 // Health check endpoint
 app.get('/api/v1/health', (req, res) => {

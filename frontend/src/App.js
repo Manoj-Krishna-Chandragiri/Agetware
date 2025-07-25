@@ -4,6 +4,10 @@ import CreateLoan from './components/CreateLoan';
 import RecordPayment from './components/RecordPayment';
 import ViewLedger from './components/ViewLedger';
 import CustomerOverview from './components/CustomerOverview';
+import CaesarCipher from './components/CaesarCipher';
+import CurrencyFormatter from './components/CurrencyFormatter';
+import ListCombiner from './components/ListCombiner';
+import MinimizingLoss from './components/MinimizingLoss';
 import Home from './components/Home';
 
 function App() {
@@ -13,7 +17,7 @@ function App() {
     <div className="App">
       <header className="header">
         <div className="container">
-          <h1>Bank Lending System</h1>
+          <h1>Bank Lending System + Programming Challenges </h1>
         </div>
       </header>
 
@@ -60,6 +64,39 @@ function App() {
                 Customer Overview
               </Link>
             </li>
+            <li className="nav-divider">• Programming Challenges •</li>
+            <li>
+              <Link 
+                to="/caesar-cipher" 
+                className={`nav-link ${location.pathname === '/caesar-cipher' ? 'active' : ''}`}
+              >
+                🔐 Caesar Cipher
+              </Link>
+            </li>
+            <li>
+              <Link 
+                to="/currency-formatter" 
+                className={`nav-link ${location.pathname === '/currency-formatter' ? 'active' : ''}`}
+              >
+                ₹ Currency Format
+              </Link>
+            </li>
+            <li>
+              <Link 
+                to="/list-combiner" 
+                className={`nav-link ${location.pathname === '/list-combiner' ? 'active' : ''}`}
+              >
+                🔗 List Combiner
+              </Link>
+            </li>
+            <li>
+              <Link 
+                to="/minimizing-loss" 
+                className={`nav-link ${location.pathname === '/minimizing-loss' ? 'active' : ''}`}
+              >
+                📉 Minimizing Loss
+              </Link>
+            </li>
           </ul>
         </div>
       </nav>
@@ -71,6 +108,10 @@ function App() {
           <Route path="/record-payment" element={<RecordPayment />} />
           <Route path="/view-ledger" element={<ViewLedger />} />
           <Route path="/customer-overview" element={<CustomerOverview />} />
+          <Route path="/caesar-cipher" element={<CaesarCipher />} />
+          <Route path="/currency-formatter" element={<CurrencyFormatter />} />
+          <Route path="/list-combiner" element={<ListCombiner />} />
+          <Route path="/minimizing-loss" element={<MinimizingLoss />} />
         </Routes>
       </main>
     </div>
