@@ -49,6 +49,23 @@ api.interceptors.response.use(
   }
 );
 
+// Add assignment problem methods directly to the api object
+api.caesarCipher = (data) => {
+  return api.post('/caesar-cipher', data);
+};
+
+api.currencyFormat = (data) => {
+  return api.post('/currency-format', data);
+};
+
+api.combineLists = (data) => {
+  return api.post('/combine-lists', data);
+};
+
+api.minimizeLoss = (data) => {
+  return api.post('/minimize-loss', data);
+};
+
 export const loanService = {
   // Create a new loan
   createLoan: (loanData) => {
@@ -73,23 +90,6 @@ export const loanService = {
   // Health check
   healthCheck: () => {
     return api.get('/health');
-  },
-
-  // Assignment Problem APIs
-  caesarCipher: (data) => {
-    return api.post('/caesar-cipher', data);
-  },
-
-  currencyFormat: (data) => {
-    return api.post('/currency-format', data);
-  },
-
-  combineLists: (data) => {
-    return api.post('/combine-lists', data);
-  },
-
-  minimizeLoss: (data) => {
-    return api.post('/minimize-loss', data);
   }
 };
 

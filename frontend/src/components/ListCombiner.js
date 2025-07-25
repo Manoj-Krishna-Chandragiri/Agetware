@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import api from '../services/api';
+import { loanService } from '../services/api';
 
 const ListCombiner = () => {
   const [list1, setList1] = useState('[{"positions": [1, 4], "values": ["A", "B"]}, {"positions": [6, 8], "values": ["C"]}]');
@@ -15,7 +15,7 @@ const ListCombiner = () => {
       const parsedList1 = JSON.parse(list1);
       const parsedList2 = JSON.parse(list2);
 
-      const response = await api.combineLists({
+      const response = await loanService.combineLists({
         list1: parsedList1,
         list2: parsedList2
       });
