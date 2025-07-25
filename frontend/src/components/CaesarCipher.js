@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { loanService } from '../services/api';
+import api from '../services/api';
 
 const CaesarCipher = () => {
   const [message, setMessage] = useState('');
@@ -13,7 +13,7 @@ const CaesarCipher = () => {
     setLoading(true);
 
     try {
-      const response = await loanService.caesarCipher({
+      const response = await api.caesarCipher({
         message,
         shift: parseInt(shift),
         operation

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { loanService } from '../services/api';
+import api from '../services/api';
 
 const CurrencyFormatter = () => {
   const [number, setNumber] = useState('');
@@ -11,7 +11,7 @@ const CurrencyFormatter = () => {
     setLoading(true);
 
     try {
-      const response = await loanService.currencyFormat({
+      const response = await api.currencyFormat({
         number: parseFloat(number)
       });
 

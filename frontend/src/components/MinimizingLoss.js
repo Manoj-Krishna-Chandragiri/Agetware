@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { loanService } from '../services/api';
+import api from '../services/api';
 
 const MinimizingLoss = () => {
   const [prices, setPrices] = useState('20,15,7,2,13');
@@ -19,7 +19,7 @@ const MinimizingLoss = () => {
         throw new Error('All prices must be valid numbers');
       }
 
-      const response = await loanService.minimizeLoss({
+      const response = await api.minimizeLoss({
         prices: priceArray
       });
 

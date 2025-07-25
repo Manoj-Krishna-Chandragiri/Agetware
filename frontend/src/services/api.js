@@ -90,6 +90,23 @@ export const loanService = {
   // Health check
   healthCheck: () => {
     return api.get('/health');
+  },
+
+  // Assignment Problem APIs - also add here for consistency
+  caesarCipher: (data) => {
+    return api.post('/caesar-cipher', data);
+  },
+
+  currencyFormat: (data) => {
+    return api.post('/currency-format', data);
+  },
+
+  combineLists: (data) => {
+    return api.post('/combine-lists', data);
+  },
+
+  minimizeLoss: (data) => {
+    return api.post('/minimize-loss', data);
   }
 };
 
