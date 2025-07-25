@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import api from '../services/api';
 
 const MinimizingLoss = () => {
   const [prices, setPrices] = useState('20,15,7,2,13');
@@ -18,25 +19,14 @@ const MinimizingLoss = () => {
         throw new Error('All prices must be valid numbers');
       }
 
-      const response = await fetch('http://localhost:5000/api/v1/minimize-loss', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          prices: priceArray
-        }),
+      const response = await api.minimizeLoss({
+        prices: priceArray
       });
 
-      const data = await response.json();
-
-      if (response.ok) {
-        setResult(data);
-      } else {
-        alert('Error: ' + data.error);
-      }
+      setResult(response.data);
     } catch (error) {
-      alert('Error: ' + error.message);
+      console.error('Minimizing loss error:', error);
+      alert('Error: ' + (error.response?.data?.error || error.message));
     } finally {
       setLoading(false);
     }

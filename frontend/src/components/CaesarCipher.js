@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import api from '../services/api';
 
 const CaesarCipher = () => {
   const [message, setMessage] = useState('');
@@ -12,27 +13,16 @@ const CaesarCipher = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:5000/api/v1/caesar-cipher', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          message,
-          shift: parseInt(shift),
-          operation
-        }),
+      const response = await api.caesarCipher({
+        message,
+        shift: parseInt(shift),
+        operation
       });
 
-      const data = await response.json();
-
-      if (response.ok) {
-        setResult(data.result);
-      } else {
-        alert('Error: ' + data.error);
-      }
+      setResult(response.data.result);
     } catch (error) {
-      alert('Error: ' + error.message);
+      console.error('Caesar cipher error:', error);
+      alert('Error: ' + (error.response?.data?.error || error.message));
     } finally {
       setLoading(false);
     }

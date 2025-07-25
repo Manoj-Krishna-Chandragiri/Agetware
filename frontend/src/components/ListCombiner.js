@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import api from '../services/api';
 
 const ListCombiner = () => {
   const [list1, setList1] = useState('[{"positions": [1, 4], "values": ["A", "B"]}, {"positions": [6, 8], "values": ["C"]}]');
@@ -14,29 +15,18 @@ const ListCombiner = () => {
       const parsedList1 = JSON.parse(list1);
       const parsedList2 = JSON.parse(list2);
 
-      const response = await fetch('http://localhost:5000/api/v1/combine-lists', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          list1: parsedList1,
-          list2: parsedList2
-        }),
+      const response = await api.combineLists({
+        list1: parsedList1,
+        list2: parsedList2
       });
 
-      const data = await response.json();
-
-      if (response.ok) {
-        setResult(data);
-      } else {
-        alert('Error: ' + data.error);
-      }
+      setResult(JSON.stringify(response.data.combined_list, null, 2));
     } catch (error) {
-      if (error instanceof SyntaxError) {
-        alert('Error: Invalid JSON format in lists');
+      console.error('List combiner error:', error);
+      if (error.name === 'SyntaxError') {
+        alert('Invalid JSON format. Please check your input.');
       } else {
-        alert('Error: ' + error.message);
+        alert('Error: ' + (error.response?.data?.error || error.message));
       }
     } finally {
       setLoading(false);

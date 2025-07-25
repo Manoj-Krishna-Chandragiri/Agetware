@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import api from '../services/api';
 
 const CurrencyFormatter = () => {
   const [number, setNumber] = useState('');
@@ -10,25 +11,14 @@ const CurrencyFormatter = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:5000/api/v1/currency-format', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          number: parseFloat(number)
-        }),
+      const response = await api.currencyFormat({
+        number: parseFloat(number)
       });
 
-      const data = await response.json();
-
-      if (response.ok) {
-        setResult(data);
-      } else {
-        alert('Error: ' + data.error);
-      }
+      setResult(response.data.formatted_number);
     } catch (error) {
-      alert('Error: ' + error.message);
+      console.error('Currency format error:', error);
+      alert('Error: ' + (error.response?.data?.error || error.message));
     } finally {
       setLoading(false);
     }
