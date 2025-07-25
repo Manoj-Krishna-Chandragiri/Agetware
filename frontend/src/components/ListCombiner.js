@@ -14,7 +14,7 @@ const ListCombiner = () => {
       const parsedList1 = JSON.parse(list1);
       const parsedList2 = JSON.parse(list2);
 
-      const response = await fetch('http://localhost:3001/api/v1/combine-lists', {
+      const response = await fetch('http://localhost:5000/api/v1/combine-lists', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

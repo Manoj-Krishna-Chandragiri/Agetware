@@ -12,7 +12,7 @@ const CaesarCipher = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:3001/api/v1/caesar-cipher', {
+      const response = await fetch('http://localhost:5000/api/v1/caesar-cipher', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

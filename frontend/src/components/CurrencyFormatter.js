@@ -10,7 +10,7 @@ const CurrencyFormatter = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:3001/api/v1/currency-format', {
+      const response = await fetch('http://localhost:5000/api/v1/currency-format', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -18,7 +18,7 @@ const MinimizingLoss = () => {
         throw new Error('All prices must be valid numbers');
       }
 
-      const response = await fetch('http://localhost:3001/api/v1/minimize-loss', {
+      const response = await fetch('http://localhost:5000/api/v1/minimize-loss', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

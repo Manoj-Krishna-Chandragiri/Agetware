@@ -127,7 +127,7 @@ const Home = () => {
           <strong style={{ fontSize: '1.2rem' }}>API Connection Status</strong>
           <div style={{ marginTop: '0.5rem', fontSize: '1rem' }}>
             {apiStatus === 'checking' ? 'Establishing connection...' :
-             apiStatus === 'connected' ? 'All systems operational! Backend services running on port 3001' :
+             apiStatus === 'connected' ? 'All systems operational! Backend services running on port 5000' :
              'Connection failed. Please ensure the backend server is running.'}
           </div>
         </div>
