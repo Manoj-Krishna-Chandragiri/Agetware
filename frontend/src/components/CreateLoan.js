@@ -111,9 +111,9 @@ const CreateLoan = () => {
               onChange={handleChange}
               required
             >
-              <option value="CUST001">CUST001 - John Doe</option>
-              <option value="CUST002">CUST002 - Jane Smith</option>
-              <option value="CUST003">CUST003 - Bob Johnson</option>
+              <option value="CUST001">CUST001 - Manoj Krishna</option>
+              <option value="CUST002">CUST002 - Priya Sharma</option>
+              <option value="CUST003">CUST003 - Arjun Patel</option>
             </select>
           </div>
 
@@ -164,16 +164,16 @@ const CreateLoan = () => {
 
           {preview && (
             <div style={{ 
-              marginTop: '1.5rem', 
-              padding: '1rem', 
-              backgroundColor: '#e8f4f8', 
-              borderRadius: '4px',
-              border: '1px solid #bee5eb'
+              marginTop: '20px', 
+              padding: '15px', 
+              backgroundColor: '#f0f8ff', 
+              borderRadius: '5px',
+              border: '1px solid #cce7ff'
             }}>
-              <h3 style={{ marginBottom: '1rem', color: '#0c5460' }}>Loan Calculation Preview</h3>
-              <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
+              <h3 style={{ marginBottom: '15px', color: '#2c5282' }}>Loan Preview</h3>
+              <div className="grid" style={{ gridTemplateColumns: 'repeat(2, 1fr)', gap: '15px' }}>
                 <div>
-                  <strong>Principal Amount:</strong><br />
+                  <strong>Principal:</strong><br />
                   ₹{preview.principal.toLocaleString()}
                 </div>
                 <div>
@@ -189,9 +189,8 @@ const CreateLoan = () => {
                   ₹{preview.monthlyEmi.toLocaleString()}
                 </div>
               </div>
-              <div style={{ marginTop: '1rem', fontSize: '0.9rem', color: '#6c757d' }}>
-                <strong>Formula:</strong> Simple Interest = P × N × R / 100<br />
-                <strong>EMI:</strong> (Principal + Total Interest) / (Years × 12)
+              <div style={{ marginTop: '10px', fontSize: '14px', color: '#666' }}>
+                Formula: Interest = P × N × R / 100
               </div>
             </div>
           )}

@@ -53,9 +53,9 @@ const CustomerOverview = () => {
 
   const getCustomerName = (id) => {
     const customers = {
-      'CUST001': 'John Doe',
-      'CUST002': 'Jane Smith',
-      'CUST003': 'Bob Johnson'
+      'CUST001': 'Manoj Krishna',
+      'CUST002': 'Priya Sharma',
+      'CUST003': 'Arjun Patel'
     };
     return customers[id] || id;
   };
@@ -74,9 +74,9 @@ const CustomerOverview = () => {
               onChange={(e) => setCustomerId(e.target.value)}
               required
             >
-              <option value="CUST001">CUST001 - John Doe</option>
-              <option value="CUST002">CUST002 - Jane Smith</option>
-              <option value="CUST003">CUST003 - Bob Johnson</option>
+              <option value="CUST001">CUST001 - Manoj Krishna</option>
+              <option value="CUST002">CUST002 - Priya Sharma</option>
+              <option value="CUST003">CUST003 - Arjun Patel</option>
             </select>
           </div>
 

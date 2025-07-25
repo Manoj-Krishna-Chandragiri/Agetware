@@ -24,50 +24,52 @@ const db = new sqlite3.Database('./bank_lending.db', (err) => {
 
 // Initialize database tables
 function initializeDatabase() {
-  // Create Customers table
-  db.run(`
-    CREATE TABLE IF NOT EXISTS customers (
-      customer_id TEXT PRIMARY KEY,
-      name TEXT NOT NULL,
-      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-    )
-  `);
+  db.serialize(() => {
+    // Create Customers table
+    db.run(`
+      CREATE TABLE IF NOT EXISTS customers (
+        customer_id TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
 
-  // Create Loans table
-  db.run(`
-    CREATE TABLE IF NOT EXISTS loans (
-      loan_id TEXT PRIMARY KEY,
-      customer_id TEXT NOT NULL,
-      principal_amount DECIMAL(15,2) NOT NULL,
-      total_amount DECIMAL(15,2) NOT NULL,
-      interest_rate DECIMAL(5,2) NOT NULL,
-      loan_period_years INTEGER NOT NULL,
-      monthly_emi DECIMAL(15,2) NOT NULL,
-      status TEXT DEFAULT 'ACTIVE',
-      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (customer_id) REFERENCES customers (customer_id)
-    )
-  `);
+    // Create Loans table
+    db.run(`
+      CREATE TABLE IF NOT EXISTS loans (
+        loan_id TEXT PRIMARY KEY,
+        customer_id TEXT NOT NULL,
+        principal_amount DECIMAL(15,2) NOT NULL,
+        total_amount DECIMAL(15,2) NOT NULL,
+        interest_rate DECIMAL(5,2) NOT NULL,
+        loan_period_years INTEGER NOT NULL,
+        monthly_emi DECIMAL(15,2) NOT NULL,
+        status TEXT DEFAULT 'ACTIVE',
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (customer_id) REFERENCES customers (customer_id)
+      )
+    `);
 
-  // Create Payments table
-  db.run(`
-    CREATE TABLE IF NOT EXISTS payments (
-      payment_id TEXT PRIMARY KEY,
-      loan_id TEXT NOT NULL,
-      amount DECIMAL(15,2) NOT NULL,
-      payment_type TEXT NOT NULL,
-      payment_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (loan_id) REFERENCES loans (loan_id)
-    )
-  `);
+    // Create Payments table
+    db.run(`
+      CREATE TABLE IF NOT EXISTS payments (
+        payment_id TEXT PRIMARY KEY,
+        loan_id TEXT NOT NULL,
+        amount DECIMAL(15,2) NOT NULL,
+        payment_type TEXT NOT NULL,
+        payment_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (loan_id) REFERENCES loans (loan_id)
+      )
+    `);
 
-  // Insert sample customers for testing
-  db.run(`
-    INSERT OR IGNORE INTO customers (customer_id, name) VALUES 
-    ('CUST001', 'John Doe'),
-    ('CUST002', 'Jane Smith'),
-    ('CUST003', 'Bob Johnson')
-  `);
+    // Insert sample customers for testing
+    db.run(`
+      INSERT OR IGNORE INTO customers (customer_id, name) VALUES 
+      ('CUST001', 'Manoj Krishna'),
+      ('CUST002', 'Priya Sharma'),
+      ('CUST003', 'Arjun Patel')
+    `);
+  });
 }
 
 // Utility functions

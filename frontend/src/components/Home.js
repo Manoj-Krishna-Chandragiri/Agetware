@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { loanService } from '../services/api';
 
 const Home = () => {
@@ -28,25 +29,25 @@ const Home = () => {
         
         <div style={{ marginTop: '2rem' }}>
           <div className="grid">
-            <div className="stats-card">
+            <Link to="/create-loan" className="stats-card" style={{ textDecoration: 'none', color: 'inherit' }}>
               <div className="stats-number">LEND</div>
-              <div className="stats-label">Create new loans for customers</div>
-            </div>
+              <div className="stats-label">Create loans</div>
+            </Link>
             
-            <div className="stats-card">
+            <Link to="/record-payment" className="stats-card" style={{ textDecoration: 'none', color: 'inherit' }}>
               <div className="stats-number">PAYMENT</div>
-              <div className="stats-label">Record EMI and lump sum payments</div>
-            </div>
+              <div className="stats-label">Record payments</div>
+            </Link>
             
-            <div className="stats-card">
+            <Link to="/view-ledger" className="stats-card" style={{ textDecoration: 'none', color: 'inherit' }}>
               <div className="stats-number">LEDGER</div>
-              <div className="stats-label">View loan details and transaction history</div>
-            </div>
+              <div className="stats-label">View transactions</div>
+            </Link>
             
-            <div className="stats-card">
+            <Link to="/customer-overview" className="stats-card" style={{ textDecoration: 'none', color: 'inherit' }}>
               <div className="stats-number">OVERVIEW</div>
-              <div className="stats-label">Get customer account summary</div>
-            </div>
+              <div className="stats-label">Customer summary</div>
+            </Link>
           </div>
         </div>
 
@@ -73,12 +74,12 @@ const Home = () => {
         </div>
 
         <div style={{ marginTop: '2rem' }}>
-          <h3>Quick Start Guide</h3>
+          <h3>How to Use</h3>
           <ol style={{ marginTop: '1rem', paddingLeft: '2rem' }}>
-            <li>Start by creating a loan for a customer (CUST001, CUST002, or CUST003)</li>
-            <li>Record payments against the loan using the loan ID</li>
-            <li>Check the ledger to see transaction history</li>
-            <li>Use customer overview to see all loans for a customer</li>
+            <li>Create a loan for customers (CUST001, CUST002, or CUST003)</li>
+            <li>Record payments using the loan ID</li>
+            <li>Check ledger for transaction history</li>
+            <li>View customer overview for all loans</li>
           </ol>
         </div>
       </div>
