@@ -20,7 +20,7 @@ const ListCombiner = () => {
         list2: parsedList2
       });
 
-      setResult(JSON.stringify(response.data.combined_list, null, 2));
+      setResult(response.data);
     } catch (error) {
       console.error('List combiner error:', error);
       if (error.name === 'SyntaxError') {

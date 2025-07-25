@@ -15,7 +15,7 @@ const CurrencyFormatter = () => {
         number: parseFloat(number)
       });
 
-      setResult(response.data.formatted_number);
+      setResult(response.data);
     } catch (error) {
       console.error('Currency format error:', error);
       alert('Error: ' + (error.response?.data?.error || error.message));
